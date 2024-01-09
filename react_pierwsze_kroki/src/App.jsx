@@ -3,13 +3,6 @@ import Countdown from "./Countdown";
 import "./App.css";
 import EditEvent from "./EditEvent";
 
-// const App = () => (
-// 	<>
-// 		<Countdown name="śniadanie" time="7:00"/>
-// 		<Countdown name="obiad" time="15:00"/>
-// 	</>
-// );
-
 class App extends Component {
 	constructor() {
 		super();
@@ -19,13 +12,13 @@ class App extends Component {
 				{ id: 1, name: "obiad", time: "15:00" },
 				{ id: 2, name: "kolacja", time: "19:00" },
 			],
-			editeedEvents: "",
+			editedEvents: "",
 		};
 		this.handleEditEvent = this.handleEditEvent.bind(this);
 	}
 
 	handleEditEvent(val) {
-		this.setState({ editeedEvents: val });
+		this.setState({ editedEvents: val });
 	}
 
 	render() {
