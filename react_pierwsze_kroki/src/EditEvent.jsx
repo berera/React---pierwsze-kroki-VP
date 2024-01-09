@@ -1,5 +1,6 @@
 import React from "react";
 import "./EditEvent.css";
+import { isValidNumberInput } from "./utils";
 
 const EditEvent = (props) => {
 	return (
@@ -23,7 +24,10 @@ const EditEvent = (props) => {
 					id="hour"
 					name="hour"
 					value={props.hour}
-					onChange={(e) => props.onInputChange({[e.target.name]: e.target.value})}
+					onKeyDown={(e) => isValidNumberInput(e)}
+					onChange={(e) =>
+						props.onInputChange({ [e.target.name]: e.target.value })
+					}
 				/>
 			</div>
 			<div className="edit-event__input-group">
@@ -33,7 +37,9 @@ const EditEvent = (props) => {
 					id="minute"
 					name="minute"
 					value={props.minute}
-					onChange={(e) => props.onInputChange({[e.target.name]: e.target.value})}
+					onChange={(e) =>
+						props.onInputChange({ [e.target.name]: e.target.value })
+					}
 				/>
 			</div>
 			<button onClick={() => props.onSave()}>OK</button>
