@@ -10,11 +10,17 @@ import {
 import PropTypes from "prop-types";
 
 const EditEvent = (props) => {
+
 	const isFormValide =
 		isValidName(props.name) &&
 		isValidHour(props.hour) &&
 		isValidMinute(props.minute);
 
+	const isFormEmpty = 
+	isValidName(props.name) &&
+	isValidHour(props.hour) &&
+	isValidMinute(props.minute);
+	
 	return (
 		<div className="edit-event">
 			<div className="edit-event__input-group">
@@ -61,7 +67,7 @@ const EditEvent = (props) => {
 			<button disabled={!isFormValide} onClick={() => props.onSave()}>
 				OK
 			</button>
-			<button>Cancel</button>
+			<button disabled={false} onClick={() => props.onCancel()}>Cancel</button>
 		</div>
 	);
 };
@@ -72,6 +78,7 @@ EditEvent.propTypes = {
 	minute: PropTypes.number,
 	onInputChange: PropTypes.func,
 	onSave: PropTypes.func,
+	onCancel: PropTypes.func,
 };
 
 export default EditEvent;
