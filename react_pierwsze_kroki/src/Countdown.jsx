@@ -8,8 +8,8 @@ const Countdown = (props) => (
 		<div className="countdown">
 			<strong>{props.name}</strong> - {props.hour}:{props.minute}
 			<div className="countdown__icons">
-				<i className="icon edit" onClick={()=> props.onEditInit(props.id)}/>
-				<i className="icon times" onClick={()=> props.onRemove(props.id)}></i>
+				<i className="icon edit" onClick={() => props.onEditInit(props.id)} />
+				<i className="icon times" onClick={() => props.onRemove(props.id)}></i>
 			</div>
 		</div>
 	</>
@@ -17,8 +17,10 @@ const Countdown = (props) => (
 
 Countdown.propTypes = {
 	name: PropTypes.string,
-	hour: PropTypes.string,
-	minute: PropTypes.string,
+	hour: PropTypes.number,
+	minute: PropTypes.number,
+	onEditInit: PropTypes.func,
+	onRemove: PropTypes.func,
 };
 
 export default Countdown;
