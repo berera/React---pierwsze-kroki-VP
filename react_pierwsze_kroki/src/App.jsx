@@ -9,9 +9,9 @@ class App extends Component {
 		super();
 		this.state = {
 			events: [
-				// { id: 0, name: "śniadanie", hour: "07", minute: "00" },
-				// { id: 1, name: "obiad", hour: "15", minute: "00" },
-				// { id: 2, name: "kolacja", hour: "19", minute: "00" },
+				{ id: 0, name: "śniadanie", hour: "07", minute: "00" },
+				{ id: 1, name: "obiad", hour: "15", minute: "00" },
+				{ id: 2, name: "kolacja", hour: "19", minute: "00" },
 			],
 			editedEvent: {
 				id: uniqeid(),
@@ -24,6 +24,7 @@ class App extends Component {
 		this.handleEditEvent = this.handleEditEvent.bind(this);
 		this.handleSaveEvent = this.handleSaveEvent.bind(this);
 		this.handleRemoveEvent = this.handleRemoveEvent.bind(this);
+		this.handleEditInit = this.handleEditInit.bind(this);
 	}
 
 	handleEditEvent(val) {
@@ -36,20 +37,47 @@ class App extends Component {
 	}
 
 	handleSaveEvent() {
-		this.setState((prevState) => ({
-			events: [...prevState.events, prevState.editedEvent],
-			editedEvent: {
-				id: uniqeid(),
-				name: "",
-				hour: "",
-				minute: "",
-			},
-		}));
+		this.setState((prevState) => {
+			const editedEventExist = prevState.events.find(
+				(el) => el.id === prevState.editedEvent.id
+			);
+			let updatedEvent;
+
+			if (editedEventExist) {
+				updatedEvent = prevState.events.map((el) => {
+					if (el.id === prevState.editedEvent.id) return prevState.editedEvent;
+					else return el;
+				});
+			} else {
+				updatedEvent = [...prevState.events, prevState.editedEvent];
+			}
+
+			return {
+				events: updatedEvent,
+				editedEvent: {id: uniqeid(), name: "", hour:"", minute:""}
+			}
+		});
+		// this.setState((prevState) => ({
+		// 	events: [...prevState.events, prevState.editedEvent],
+		// 	editedEvent: {
+		// 		id: uniqeid(),
+		// 		name: "",
+		// 		hour: "",
+		// 		minute: "",
+		// 	},
+		// }));
 	}
 
 	handleRemoveEvent(id) {
 		this.setState((prevState) => ({
 			events: prevState.events.filter((el) => el.id !== id),
+		}));
+	}
+
+	handleEditInit(id) {
+		this.setState((prevState) => ({
+			// editedEvent: {...prevState.events[id]}
+			editedEvent: { ...prevState.events.find((el) => el.id === id) },
 		}));
 	}
 
@@ -63,6 +91,7 @@ class App extends Component {
 					hour={el.hour}
 					minute={el.minute}
 					onRemove={(id) => this.handleRemoveEvent(id)}
+					onEditInit={(id) => this.handleEditInit(id)}
 				/>
 			);
 		});
