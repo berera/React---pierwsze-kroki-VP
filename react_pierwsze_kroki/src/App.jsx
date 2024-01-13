@@ -14,10 +14,10 @@ class App extends Component {
 				seconds: new Date().getSeconds(),
 			},
 			events: [
-				{ id: 0, name: "śniadanie", hour: 7, minute: 0 },
-				{ id: 1, name: "obiad", hour: 15, minute: 0 },
-				{ id: 2, name: "kolacja", hour: 20, minute: 0 },
-				{ id: 3, name: "spanie", hour: 23, minute: 0 },
+				// { id: 0, name: "śniadanie", hour: 7, minute: 0 },
+				// { id: 1, name: "obiad", hour: 15, minute: 0 },
+				// { id: 2, name: "kolacja", hour: 20, minute: 0 },
+				// { id: 3, name: "spanie", hour: 23, minute: 0 },
 			],
 			editedEvent: {
 				id: uniqeid(),
@@ -46,6 +46,9 @@ class App extends Component {
 	}
 
 	componentDidMount() {
+		const storageEvents = JSON.parse(localStorage.getItem("events")) || [];
+		this.setState({ events: storageEvents });
+
 		const inretvalID = setInterval(this.timer, 1000);
 		this.setState({ intervalId: inretvalID });
 	}
@@ -64,26 +67,31 @@ class App extends Component {
 	}
 
 	handleSaveEvent() {
-		this.setState((prevState) => {
-			const editedEventExist = prevState.events.find(
-				(el) => el.id === prevState.editedEvent.id
-			);
-			let updatedEvent;
+		this.setState(
+			(prevState) => {
+				const editedEventExist = prevState.events.find(
+					(el) => el.id === prevState.editedEvent.id
+				);
+				let updatedEvent;
 
-			if (editedEventExist) {
-				updatedEvent = prevState.events.map((el) => {
-					if (el.id === prevState.editedEvent.id) return prevState.editedEvent;
-					else return el;
-				});
-			} else {
-				updatedEvent = [...prevState.events, prevState.editedEvent];
-			}
+				if (editedEventExist) {
+					updatedEvent = prevState.events.map((el) => {
+						if (el.id === prevState.editedEvent.id)
+							return prevState.editedEvent;
+						else return el;
+					});
+				} else {
+					updatedEvent = [...prevState.events, prevState.editedEvent];
+				}
 
-			return {
-				events: updatedEvent,
-				editedEvent: { id: uniqeid(), name: "", hour: -1, minute: -1 },
-			};
-		});
+				return {
+					events: updatedEvent,
+					editedEvent: { id: uniqeid(), name: "", hour: -1, minute: -1 },
+				};
+			},
+			() => localStorage.setItem("events", JSON.stringify(this.state.events))
+		);
+
 		// this.setState((prevState) => ({
 		// 	events: [...prevState.events, prevState.editedEvent],
 		// 	editedEvent: {
@@ -96,9 +104,12 @@ class App extends Component {
 	}
 
 	handleRemoveEvent(id) {
-		this.setState((prevState) => ({
-			events: prevState.events.filter((el) => el.id !== id),
-		}));
+		this.setState(
+			(prevState) => ({
+				events: prevState.events.filter((el) => el.id !== id),
+			}),
+			() => localStorage.setItem("events", JSON.stringify(this.state.events))
+		);
 	}
 
 	handleEditInit(id) {
