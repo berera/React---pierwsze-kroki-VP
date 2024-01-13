@@ -17,9 +17,7 @@ const EditEvent = (props) => {
 		isValidMinute(props.minute);
 
 	const isFormEmpty = 
-	isValidName(props.name) &&
-	isValidHour(props.hour) &&
-	isValidMinute(props.minute);
+	props.name==="" & props.hour===-1 & props.minute===-1
 	
 	return (
 		<div className="edit-event">
@@ -57,6 +55,7 @@ const EditEvent = (props) => {
 					id="minute"
 					name="minute"
 					value={props.minute === -1 ? "" : props.minute}
+					onKeyDown={(e) => isValidNumberInput(e)}
 					onChange={(e) =>
 						props.onInputChange({
 							[e.target.name]: parseInputAsNumber(e.target.value),
@@ -67,7 +66,7 @@ const EditEvent = (props) => {
 			<button disabled={!isFormValide} onClick={() => props.onSave()}>
 				OK
 			</button>
-			<button disabled={false} onClick={() => props.onCancel()}>Cancel</button>
+			<button disabled={isFormEmpty} onClick={() => props.onCancel()}>Cancel</button>
 		</div>
 	);
 };
