@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import "./Countdown.css";
 import "./../node_modules/semantic-ui-css/semantic.css";
 import { hourMinutToSeconds, secondsToHourMinutSecond } from "./utils";
+import Overlay from "./Overlay";
 
 const Countdown = (props) => {
 	const eventInSeconds = hourMinutToSeconds(props.hour, props.minute);
@@ -18,11 +19,17 @@ const Countdown = (props) => {
 				<strong>{props.name}</strong> - {diffText}
 				<div className="countdown__icons">
 					<i className="icon edit" onClick={() => props.onEditInit(props.id)} />
-					<i
-						className="icon times"
-						onClick={() => props.onRemove(props.id)}
-					></i>
+					<i className="icon times" onClick={() => props.onRemove(props.id)} />
 				</div>
+				<Overlay>
+					{/* <h1> */}
+					<p>{props.name}</p>
+					{/* </h1> */}
+					<p>
+						{props.hour.toString().padStart(2, 0)}:
+						{props.minute.toString().padStart(2, 0)}
+					</p>
+				</Overlay>
 			</div>
 		</>
 	);
